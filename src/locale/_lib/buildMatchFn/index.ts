@@ -1,4 +1,4 @@
-import type { Quarter, Era, Day, Month } from "../../../types.ts";
+import type { Quarter, Era, Day, Month, JpEra } from "../../../types.ts";
 import type {
   LocaleUnitValue,
   LocaleWidth,
@@ -44,24 +44,26 @@ export type ParsePattern<Value extends LocaleUnitValue> =
       ? readonly [RegExp, RegExp, RegExp, RegExp]
       : Value extends Era
         ? readonly [RegExp, RegExp]
-        : Value extends Day
-          ? readonly [RegExp, RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]
-          : Value extends Month
-            ? readonly [
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-                RegExp,
-              ]
-            : never;
+        : Value extends JpEra
+          ? readonly [RegExp, RegExp, RegExp, RegExp, RegExp]
+          : Value extends Day
+            ? readonly [RegExp, RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]
+            : Value extends Month
+              ? readonly [
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                  RegExp,
+                ]
+              : never;
 
 export function buildMatchFn<
   Value extends LocaleUnitValue,

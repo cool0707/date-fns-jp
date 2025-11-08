@@ -7,6 +7,7 @@ import type {
   Month,
   Quarter,
   WeekOptions,
+  JpEra,
 } from "../types.ts";
 
 /**
@@ -204,6 +205,8 @@ export interface Localize {
   day: LocalizeFn<Day>;
   /** The function that localizes the day period */
   dayPeriod: LocalizeFn<LocaleDayPeriod>;
+  /** The function that localized the japanese era */
+  jpEra?: LocalizeFn<JpEra>;
 
   /** The function that can preprocess parts/tokens **/
   preprocessor?: <DateType extends Date>(
@@ -260,6 +263,8 @@ export interface Match {
   day: MatchFn<Day>;
   /** The function that parses a localized time of the day. */
   dayPeriod: MatchFn<LocaleDayPeriod>;
+  /** The function that parses a localized japanese era */
+  jpEra?: MatchFn<JpEra>;
 }
 
 /**
@@ -367,7 +372,7 @@ export type FormatLongWidth = "full" | "long" | "medium" | "short" | "any";
 /**
  * The formatting unit value, represents the raw value that can be formatted.
  */
-export type LocaleUnitValue = Era | Quarter | Month | Day | LocaleDayPeriod;
+export type LocaleUnitValue = Era | Quarter | Month | Day | LocaleDayPeriod | JpEra;
 
 /**
  * The format width. Defines how short or long the formatted string might be.

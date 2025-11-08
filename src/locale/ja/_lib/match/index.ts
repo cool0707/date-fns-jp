@@ -72,6 +72,17 @@ const parseDayPeriodPatterns = {
     night: /^深夜/i,
   },
 };
+const matchJpEraPatterns = {
+  narrow: /^(M|T|S|H|R)/i,
+  short: /^(1|2|3|4|5)/,
+  abbreviated: /^(明|大|昭|平|令)/,
+  wide: /^(明治|大正|昭和|平成|令和)/,
+};
+const parseJpEraPatterns = {
+  narrow: [/^M/i, /^T/i, /^S/i, /^H/i, /^R/i] as const,
+  short: [/^1/, /^2/, /^3/, /^4/, /^5/] as const,
+  any: [/^明/, /^大/, /^昭/, /^平/, /^令/] as const,
+};
 
 export const match: Match = {
   ordinalNumber: buildMatchPatternFn({
@@ -117,4 +128,11 @@ export const match: Match = {
     parsePatterns: parseDayPeriodPatterns,
     defaultParseWidth: "any",
   }),
+
+  jpEra: buildMatchFn({
+    matchPatterns: matchJpEraPatterns,
+    defaultMatchWidth: "wide",
+    parsePatterns: parseJpEraPatterns,
+    defaultParseWidth: "any",
+  }), 
 };

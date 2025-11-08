@@ -138,6 +138,12 @@ const formattingDayPeriodValues = {
     night: "深夜",
   },
 };
+const jpEraValues = {
+  narrow: ["M", "T", "S", "H", "R"] as const,
+  short: ["1", "2", "3", "4", "5"] as const,
+  abbreviated: ["明", "大", "昭", "平", "令"] as const,
+  wide: ["明治", "大正", "昭和", "平成", "令和"] as const,
+};
 
 const ordinalNumber: LocalizeFn<number> = (dirtyNumber, options) => {
   const number = Number(dirtyNumber);
@@ -194,5 +200,10 @@ export const localize: Localize = {
     defaultWidth: "wide",
     formattingValues: formattingDayPeriodValues,
     defaultFormattingWidth: "wide",
+  }),
+
+  jpEra: buildLocalizeFn({
+    values: jpEraValues,
+    defaultWidth: "wide",
   }),
 };

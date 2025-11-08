@@ -1,4 +1,4 @@
-import type { Day, Era, Month, Quarter } from "../../../types.ts";
+import type { Day, Era, Month, Quarter, JpEra } from "../../../types.ts";
 import type {
   LocaleDayPeriod,
   LocaleUnitValue,
@@ -54,11 +54,13 @@ export type LocalizeValues<Value extends LocaleUnitValue> =
       ? LocalizeEraValues
       : Value extends Quarter
         ? LocalizeQuarterValues
-        : Value extends Day
-          ? LocalizeDayValues
-          : Value extends Month
-            ? LocalizeMonthValues
-            : never;
+        : Value extends JpEra
+          ? LocalizeJpEraValues
+          : Value extends Day
+            ? LocalizeDayValues
+            : Value extends Month
+              ? LocalizeMonthValues
+              : never;
 
 /**
  * The tuple of localized era values. The first element represents BC,
@@ -100,6 +102,17 @@ export type LocalizeMonthValues = readonly [
   string,
   string,
   string,
+];
+
+/**
+ * The tuple of localized Japanese era values. The first element represents Meiji 明治).
+ */
+export type LocalizeJpEraValues = readonly [
+  string,
+  string,
+  string,
+  string,
+  string
 ];
 
 export function buildLocalizeFn<

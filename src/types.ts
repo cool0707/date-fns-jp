@@ -145,6 +145,11 @@ export type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 /**
+ * The japanese era. Can be either 1 (明治 - Meiji), 2 (大正 - Taisho), 3 (昭和 - Showa), 4 (平成 - Heisei), 5 (令和 - Reiwa).
+ */
+export type JpEra = 1 | 2 | 3 | 4 | 5;
+
+/**
  * FirstWeekContainsDate is used to determine which week is the first week of
  * the year, based on what day the January, 1 is in that week.
  *
