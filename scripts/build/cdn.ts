@@ -55,7 +55,11 @@ Promise.all([
       paths.map((path) => async () => {
         // Use Babel to transpile
         assertShellOutput(
-          await $`env BABEL_ENV=cdn pnpm babel ${path} --out-file ${path} --source-maps`,
+          //await $`env BABEL_ENV=cdn pnpm babel ${path} --out-file ${path} --source-maps`,
+          await $`bun x babel ${path} --out-file ${path} --source-maps`.env({
+            ...process.env, // 既存の環境変数をすべて引き継ぎ
+            BABEL_ENV: 'cdn' // BABEL_ENV=cdn を上書き・追加
+          })
         );
 
         // Wrap into IIFE, to avoid polluting global scope
