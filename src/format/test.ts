@@ -808,7 +808,7 @@ describe("format", () => {
   });
 
   it("throws RangeError exception if the format string contains an unescaped latin alphabet character", () => {
-    expect(format.bind(null, date, "yyyy-MM-dd-nnnn")).toThrow(RangeError);
+    expect(format.bind(null, date, "yyyy-MM-dd-gggg")).toThrow(RangeError);
   });
 
   describe("useAdditionalWeekYearTokens and useAdditionalDayOfYearTokens options", () => {

@@ -3,6 +3,7 @@ import { parse } from "./index.ts";
 import { assertType } from "../_lib/test/index.ts";
 import { UTCDate } from "@date-fns/utc";
 import { TZDate, tz } from "@date-fns/tz";
+import { ja, jaHira } from "../locale/index.ts";
 
 describe("parse", () => {
   const referenceDate = new Date(1986, 3 /* Apr */, 4, 10, 32, 0, 900);
@@ -2269,7 +2270,7 @@ describe("parse", () => {
 
     it("throws RangeError exception if the format string contains an unescaped latin alphabet character", () => {
       expect(() =>
-        parse("2016-11-05-nnnn", "yyyy-MM-dd-nnnn", referenceDate),
+        parse("2016-11-05-gggg", "yyyy-MM-dd-gggg", referenceDate),
       ).toThrow(RangeError);
     });
   });
@@ -2549,6 +2550,111 @@ describe("parse", () => {
       expect(
         parse("2023-03-13 03:30", format, new Date(), { in: ny }).toISOString(),
       ).toBe("2023-03-13T03:30:00.000-04:00");
+    });
+  });
+
+  describe("Japanese era (N token)", () => {
+    it("parses Japanese era with short format (1)", () => {
+      const result = parse("1", "N", referenceDate, { locale: ja });
+      const expectedResult = new Date(1868, 0, 1);
+      expectedResult.setHours(0, 0, 0, 0);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it("parses Japanese era with narrow format (M)", () => {
+      const result = parse("M", "NN", referenceDate, { locale: ja });
+      const expectedResult = new Date(1868, 0, 1);
+      expectedResult.setHours(0, 0, 0, 0);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it("parses Japanese era with abbreviated format (明)", () => {
+      const result = parse("明", "NNN", referenceDate, { locale: ja });
+      const expectedResult = new Date(1868, 0, 1);
+      expectedResult.setHours(0, 0, 0, 0);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it("parses Japanese era with wide format (明治)", () => {
+      const result = parse("明治", "NNNN", referenceDate, { locale: ja });
+      const expectedResult = new Date(1868, 0, 1);
+      expectedResult.setHours(0, 0, 0, 0);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it("parses Taisho era", () => {
+      const result = parse("大正", "NNNN", referenceDate, { locale: ja });
+      const expectedResult = new Date(1912, 0, 1);
+      expectedResult.setHours(0, 0, 0, 0);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it("parses Reiwa era", () => {
+      const result = parse("令和", "NNNN", referenceDate, { locale: ja });
+      const expectedResult = new Date(2019, 0, 1);
+      expectedResult.setHours(0, 0, 0, 0);
+      expect(result).toEqual(expectedResult);
+    });
+  });
+
+  describe("Japanese era year (n token)", () => {
+    it("parses era year 1 (gannen) with ja locale", () => {
+      const result = parse("令和元年", "NNNNno年", referenceDate, { locale: ja });
+      expect(result.getFullYear()).toBe(2019);
+      expect(result.getMonth()).toBe(0); // January
+    });
+
+    it("parses era year 5 with ja locale", () => {
+      const result = parse("令和5年", "NNNNn年", referenceDate, { locale: ja });
+      expect(result.getFullYear()).toBe(2023);
+    });
+
+    it("parses era year 1 with ordinal 'no' token (gannen) - ja locale", () => {
+      const result = parse("令和元", "NNNNno", referenceDate, { locale: ja });
+      expect(result.getFullYear()).toBe(2019);
+    });
+
+    it("parses era year 2 with ordinal 'no' token - ja locale", () => {
+      const result = parse("令和2", "NNNNno", referenceDate, { locale: ja });
+      expect(result.getFullYear()).toBe(2020);
+    });
+
+    it("parses era year with Hira (hiragana) locale", () => {
+      const result = parse("めいじがん年", "NNNNno年", referenceDate, { locale: jaHira });
+      expect(result.getFullYear()).toBe(1868);
+    });
+  });
+
+  describe("Japanese era combined (N + n)", () => {
+    it("parses full Japanese era date - 令和5年6月15日", () => {
+      const result = parse(
+        "令和5年6月15日",
+        "NNNNn年M月d日'",
+        referenceDate,
+        { locale: ja },
+      );
+      expect(result.getFullYear()).toBe(2023);
+      expect(result.getMonth()).toBe(5); // June
+      expect(result.getDate()).toBe(15);
+    });
+
+    it("parses Japanese era with gannen - 令和元年1月1日", () => {
+      const result = parse(
+        "令和元年1月1日",
+        "NNNNno年M月d日'",
+        referenceDate,
+        { locale: ja },
+      );
+      expect(result.getFullYear()).toBe(2019);
+      expect(result.getMonth()).toBe(0); // January
+      expect(result.getDate()).toBe(1);
+    });
+
+    it("parses Meiji gannen - 明治元年", () => {
+      const result = parse("明治元年", "NNNNno年", referenceDate, {
+        locale: ja,
+      });
+      expect(result.getFullYear()).toBe(1868);
     });
   });
 });

@@ -36,7 +36,7 @@ export interface ParseOptions<DateType extends Date = Date>
     ContextOptions<DateType> {}
 
 // This RegExp consists of three parts separated by `|`:
-// - [yYQqMLwIdDecihHKkms]o matches any available ordinal number token
+// - [yYQqMLwIdDecihHKkmsn]o matches any available ordinal number token
 //   (one of the certain letters followed by `o`)
 // - (\w)\1* matches any sequences of the same letter
 // - '' matches two quote characters in a row
@@ -47,7 +47,7 @@ export interface ParseOptions<DateType extends Date = Date>
 //   then the sequence will continue until the end of the string.
 // - . matches any single character unmatched by previous parts of the RegExps
 const formattingTokensRegExp =
-  /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g;
+  /[yYQqMLwIdDecihHKkmsn]o|(\w)\1*|''|'(''|[^'])+('|$)|./g;
 
 // This RegExp catches symbols escaped by quotes, and also
 // sequences of symbols P, p, and the combinations like `PPPPPPPppppp`

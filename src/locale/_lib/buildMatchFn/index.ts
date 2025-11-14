@@ -45,7 +45,7 @@ export type ParsePattern<Value extends LocaleUnitValue> =
       : Value extends Era
         ? readonly [RegExp, RegExp]
         : Value extends JpEra
-          ? readonly [RegExp, RegExp, RegExp, RegExp, RegExp]
+          ? readonly [RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]
           : Value extends Day
             ? readonly [RegExp, RegExp, RegExp, RegExp, RegExp, RegExp, RegExp]
             : Value extends Month

@@ -67,9 +67,6 @@ export function jpEraToDate(
     }
     const eraStartYear = era.since.getFullYear()
     const date = new Date(eraStartYear + year - 1, month - 1, day)
-    // Dates earlier than the era's start date are invalid
-    if (date < era.since) {
-        return null
-    }
+    
     return date
 }

@@ -78,10 +78,11 @@ const matchJpEraPatterns = {
   wide: /^(明治|大正|昭和|平成|令和)/,
 };
 const parseJpEraPatterns = {
-  narrow: [/^M/i, /^T/i, /^S/i, /^H/i, /^R/i] as const,
-  short: [/^1/, /^2/, /^3/, /^4/, /^5/] as const,
-  any: [/^明/, /^大/, /^昭/, /^平/, /^令/] as const,
+  narrow: [/.^/,/^M/i, /^T/i, /^S/i, /^H/i, /^R/i] as const,
+  any: [/.^/,/^明/, /^大/, /^昭/, /^平/, /^令/] as const,
 };
+const matchJpEraYearPattern = /^(元|\d+)/i;
+const parseJpEraYearPattern = /^(元|\d+)/i;
 
 export const match: Match = {
   ordinalNumber: buildMatchPatternFn({
@@ -133,5 +134,13 @@ export const match: Match = {
     defaultMatchWidth: "wide",
     parsePatterns: parseJpEraPatterns,
     defaultParseWidth: "any",
-  }), 
+  }),
+
+  jpEraYear: buildMatchPatternFn({
+    matchPattern: matchJpEraYearPattern,
+    parsePattern: parseJpEraYearPattern,
+    valueCallback: function (value) {
+      return value === "元" ? 1 : parseInt(value, 10);
+    },
+  }),
 };

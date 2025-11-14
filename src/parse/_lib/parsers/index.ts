@@ -13,6 +13,8 @@ import { ISOWeekParser } from "./ISOWeekParser.ts";
 import { DateParser } from "./DateParser.ts";
 import { DayOfYearParser } from "./DayOfYearParser.ts";
 import { DayParser } from "./DayParser.ts";
+import { JpEraParser } from "./JpEraParser.ts";
+import { JpEraYearParser } from "./JpEraYearParser.ts";
 import { LocalDayParser } from "./LocalDayParser.ts";
 import { StandAloneLocalDayParser } from "./StandAloneLocalDayParser.ts";
 import { ISODayParser } from "./ISODayParser.ts";
@@ -47,7 +49,7 @@ import { TimestampMillisecondsParser } from "./TimestampMillisecondsParser.ts";
  * |  k  | Hour [1-24]                    |  K  | Hour [0-11]                    |
  * |  l* | (deprecated)                   |  L  | Stand-alone month              |
  * |  m  | Minute                         |  M  | Month                          |
- * |  n  |                                |  N  |                                |
+ * |  n  | Japanese era year              |  N  |  Japanese era                  |
  * |  o! | Ordinal number modifier        |  O* | Timezone (GMT)                 |
  * |  p  |                                |  P  |                                |
  * |  q  | Stand-alone quarter            |  Q  | Quarter                        |
@@ -89,6 +91,8 @@ export const parsers: Record<string, Parser<any>> = {
   d: new DateParser(),
   D: new DayOfYearParser(),
   E: new DayParser(),
+  N: new JpEraParser(),
+  n: new JpEraYearParser(),
   e: new LocalDayParser(),
   c: new StandAloneLocalDayParser(),
   i: new ISODayParser(),

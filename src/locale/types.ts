@@ -267,6 +267,8 @@ export interface Match {
   dayPeriod: MatchFn<LocaleDayPeriod>;
   /** The function that parses a localized japanese era */
   jpEra?: MatchFn<JpEra>;
+  /** The function that parses a localized japanese era year (handles "元" -> 1) */
+  jpEraYear?: MatchFn<number>;
 }
 
 /**

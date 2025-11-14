@@ -79,11 +79,12 @@ const matchJpEraPatterns = {
   wide: /^(めいじ|たいしょう|しょうわ|へいせい|れいわ)/,
 };
 const parseJpEraPatterns = {
-  narrow: [/^M/i, /^T/i, /^S/i, /^H/i, /^R/i] as const,
-  short: [/^1/, /^2/, /^3/, /^4/, /^5/] as const,
-  any: [/^めい/, /^たい/, /^しょう/, /^へい/, /^れい/] as const,
+  narrow: [/.^/,/^M/i, /^T/i, /^S/i, /^H/i, /^R/i] as const,
+  any: [/.^/,/^めい/, /^たい/, /^しょう/, /^へい/, /^れい/] as const,
 };
 
+const matchJpEraYearPattern = /^(がん|\d+)/;
+const parseJpEraYearPattern = /^(がん|\d+)/;
 
 export const match: Match = {
   ordinalNumber: buildMatchPatternFn({
@@ -136,4 +137,12 @@ export const match: Match = {
     parsePatterns: parseJpEraPatterns,
     defaultParseWidth: "any",
   }),
+
+  jpEraYear: buildMatchPatternFn({
+      matchPattern: matchJpEraYearPattern,
+      parsePattern: parseJpEraYearPattern,
+      valueCallback: function (value) {
+        return value === "がん" ? 1 : parseInt(value, 10);
+      },
+    }),
 };

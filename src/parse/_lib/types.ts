@@ -7,6 +7,7 @@ import type {
 export interface ParseFlags {
   timestampIsSet?: boolean;
   era?: number;
+  jpEra?: number;
 }
 
 export type ParserOptions = Required<
