@@ -11,10 +11,11 @@ import type {
   LocalizedOptions,
   Month,
   Quarter,
-  WeekOptions,
+  WeekOptions
 } from "../../../types.ts";
 import { addLeadingZeros } from "../../addLeadingZeros/index.ts";
 import { lightFormatters } from "../lightFormatters/index.ts";
+import { getJpEraInfo, getJpEraYear } from "../../jpEras/index.ts";
 
 const dayPeriodEnum = {
   am: "am",
@@ -52,7 +53,7 @@ type Formatter = (
  * |  k  | Hour [1-24]                    |  K  | Hour [0-11]                    |
  * |  l* | (deprecated)                   |  L  | Stand-alone month              |
  * |  m  | Minute                         |  M  | Month                          |
- * |  n  |                                |  N  |                                |
+ * |  n! | Japanese Era Year              |  N! | Japanese Era                   |
  * |  o! | Ordinal number modifier        |  O  | Timezone (GMT)                 |
  * |  p! | Long localized time            |  P! | Long localized date            |
  * |  q  | Stand-alone quarter            |  Q  | Quarter                        |
@@ -66,7 +67,7 @@ type Formatter = (
  * |  y  | Year (abs)                     |  Y  | Local week-numbering year      |
  * |  z  | Timezone (specific non-locat.) |  Z* | Timezone (aliases)             |
  *
- * Letters marked by * are not implemented but reserved by Unicode standard.
+ * Letters marked by * are not implemented, but reserved by the Unicode standard.
  *
  * Letters marked by ! are non-standard, but implemented by date-fns:
  * - `o` modifies the previous token to turn it into an ordinal (see `format` docs)
@@ -763,6 +764,73 @@ export const formatters: { [token: string]: Formatter } = {
   // Milliseconds timestamp
   T: function (date, token, _localize) {
     return addLeadingZeros(+date, token.length);
+  },
+
+  // Japanese Era Year
+  n: function (date, token, localize) {
+    const jpEraYear = getJpEraYear(date);
+    if (jpEraYear === null) {
+      return "";
+    }
+
+    // first year (元年)
+    if (/^n+o$/.test(token) && localize.jpEraFirstYear) {
+      if (jpEraYear === 1) {
+        return localize.jpEraFirstYear(jpEraYear);
+      } else {
+        return addLeadingZeros(jpEraYear, token.length - 1);
+      }
+    }
+
+    return addLeadingZeros(jpEraYear, token.length);
+  },
+
+  // Japanese Era
+  N: function (date, token, localize) {
+    const jpEra = getJpEraInfo(date)?.era;
+    if (!jpEra) {
+      return "";
+    }
+
+    if (localize.jpEra) {
+      switch (token) {
+        // 1, 2, 3, 4
+        case "N":
+          return String(jpEra);
+        // M, T, S, H, R
+        case "NN":
+          return localize.jpEra(jpEra, {
+            width: "narrow",
+            context: "formatting",
+          });
+        // 明, 大, 昭, 平, 令
+        case "NNN":
+          return localize.jpEra(jpEra, {
+            width: "abbreviated",
+            context: "formatting",
+          });
+        // 明治, 大正, 昭和, 平成, 令和
+        case "NNNN":
+          return localize.jpEra(jpEra, {
+            width: "wide",
+            context: "formatting",
+          });
+        default:
+          return localize.jpEra(jpEra, {
+            width: "wide",
+            context: "formatting",
+          });
+      }
+    } else {
+      const jpEraNames: { [key: number]: string } = {
+        1: "Meiji",
+        2: "Taisho",
+        3: "Showa",
+        4: "Heisei",
+        5: "Reiwa",
+      };
+      return jpEraNames[jpEra] || "";
+    }
   },
 };
 

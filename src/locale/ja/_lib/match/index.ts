@@ -74,7 +74,6 @@ const parseDayPeriodPatterns = {
 };
 const matchJpEraPatterns = {
   narrow: /^(M|T|S|H|R)/i,
-  short: /^(1|2|3|4|5)/,
   abbreviated: /^(明|大|昭|平|令)/,
   wide: /^(明治|大正|昭和|平成|令和)/,
 };

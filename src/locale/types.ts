@@ -7,7 +7,7 @@ import type {
   Month,
   Quarter,
   WeekOptions,
-  JpEra,
+  JpEra
 } from "../types.ts";
 
 /**
@@ -207,6 +207,8 @@ export interface Localize {
   dayPeriod: LocalizeFn<LocaleDayPeriod>;
   /** The function that localized the japanese era */
   jpEra?: LocalizeFn<JpEra>;
+  /** The function that localized the first year of a japanese era */
+  jpEraFirstYear?: LocalizeFn<number>;
 
   /** The function that can preprocess parts/tokens **/
   preprocessor?: <DateType extends Date>(

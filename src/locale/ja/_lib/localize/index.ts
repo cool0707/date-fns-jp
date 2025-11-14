@@ -140,9 +140,17 @@ const formattingDayPeriodValues = {
 };
 const jpEraValues = {
   narrow: ["M", "T", "S", "H", "R"] as const,
-  short: ["1", "2", "3", "4", "5"] as const,
   abbreviated: ["明", "大", "昭", "平", "令"] as const,
   wide: ["明治", "大正", "昭和", "平成", "令和"] as const,
+};
+
+const jpEraFirstYear: LocalizeFn<number> = (dirtyNumber) => {
+  const number = Number(dirtyNumber);
+  if (number === 1 ) {
+    return "元";
+  } else {
+    return `${number}`;    
+  }
 };
 
 const ordinalNumber: LocalizeFn<number> = (dirtyNumber, options) => {
@@ -206,4 +214,6 @@ export const localize: Localize = {
     values: jpEraValues,
     defaultWidth: "wide",
   }),
+
+  jpEraFirstYear: jpEraFirstYear
 };

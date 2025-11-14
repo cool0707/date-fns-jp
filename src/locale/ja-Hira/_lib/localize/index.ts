@@ -145,9 +145,17 @@ const formattingDayPeriodValues = {
 };
 const jpEraValues = {
   narrow: ["M", "T", "S", "H", "R"] as const,
-  short: ["1", "2", "3", "4", "5"] as const,
   abbreviated: ["めい", "たい", "しょう", "へい", "れい"] as const,
   wide: ["めいじ", "たいしょう", "しょうわ", "へいせい", "れいわ"] as const,
+};
+
+const jpEraFirstYear: LocalizeFn<number> = (dirtyNumber) => {
+  const number = Number(dirtyNumber);
+  if (number === 1 ) {
+    return "がん";
+  } else {
+    return `${number}`;    
+  }
 };
 
 const ordinalNumber: LocalizeFn<number> = (dirtyNumber, options) => {
@@ -208,7 +216,9 @@ export const localize: Localize = {
   }),
 
   jpEra: buildLocalizeFn({
-      values: jpEraValues,
-      defaultWidth: "wide",
-    }),
+    values: jpEraValues,
+    defaultWidth: "wide",
+  }),
+
+  jpEraFirstYear: jpEraFirstYear
 };

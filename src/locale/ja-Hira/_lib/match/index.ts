@@ -75,7 +75,6 @@ const parseDayPeriodPatterns = {
 };
 const matchJpEraPatterns = {
   narrow: /^(M|T|S|H|R)/i,
-  short: /^(1|2|3|4|5)/,
   abbreviated: /^めい|たい|しょう|へい|れい/,
   wide: /^(めいじ|たいしょう|しょうわ|へいせい|れいわ)/,
 };

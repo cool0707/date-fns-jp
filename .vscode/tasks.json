@@ -16,7 +16,7 @@
             }
         },
         {
-            "label": "List実行",
+            "label": "Lint実行",
             "type": "shell",
             "command": "pnpm run lint",
             "group": {
