@@ -20,7 +20,7 @@ export class JpEraYearParser extends Parser<JpEraYearValue> {
 
     switch (token) {
       case "n":
-        return mapValue(parseNDigits(4, dateString), valueCallback);
+        return mapValue(parseNDigits(2, dateString), valueCallback);
       case "no":
         // Try to use jpEraYear if available (handles "元" -> 1)
         if (match.jpEraYear) {

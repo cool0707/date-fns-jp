@@ -2656,5 +2656,29 @@ describe("parse", () => {
       });
       expect(result.getFullYear()).toBe(1868);
     });
+
+    it("parses full Japanese era date - R050615", () => {
+      const result = parse(
+        "R050615",
+        "NNnnMMdd'",
+        referenceDate,
+        { locale: ja },
+      );
+      expect(result.getFullYear()).toBe(2023);
+      expect(result.getMonth()).toBe(5); // June
+      expect(result.getDate()).toBe(15);
+    });
+
+    it("parses full Japanese era date - 5110615", () => {
+      const result = parse(
+        "5110615",
+        "NnnMMdd'",
+        referenceDate,
+        { locale: ja },
+      );
+      expect(result.getFullYear()).toBe(2029);
+      expect(result.getMonth()).toBe(5); // June
+      expect(result.getDate()).toBe(15);
+    });
   });
 });

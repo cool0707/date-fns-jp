@@ -16,7 +16,7 @@ export class JpEraParser extends Parser<number> {
     switch (token) {
       // 1,2,3,4,5 (numeric or short)
       case "N":
-        return mapValue(parseNDigits(2, dateString), valueCallback);
+        return mapValue(parseNDigits(1, dateString), valueCallback);
       case "NN":
         return match.jpEra(dateString, { width: "narrow", context: "formatting" });
       case "NNN":
