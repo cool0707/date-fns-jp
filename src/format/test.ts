@@ -11,6 +11,7 @@ import {
 } from "vitest";
 import type { FormatPart } from "../types.ts";
 import { format, formatDate } from "./index.ts";
+import { ja } from "../locale/index.ts";
 
 describe("format", () => {
   const date = new Date(1986, 3 /* Apr */, 4, 10, 32, 55, 123);
@@ -1018,6 +1019,32 @@ describe("format", () => {
           in: tz("Pacific/Kiritimati"), // UTC+14:00
         }),
       ).toBe("2024-09-18");
+    });
+  });
+  describe("context", () => {
+    it("formats full Japanese era date - 令和5年6月15日", () => {
+      const date = new Date(2023, 5, 15);
+      expect(
+        format(date, "NNNNn年M月d日", { locale: ja }),
+      ).toBe("令和5年6月15日");
+    });
+    it("formats full Japanese era date - 550615", () => {
+      const date = new Date(2023, 5, 15);
+      expect(
+        format(date, "NnMMdd", { locale: ja }),
+      ).toBe("550615");
+    });
+    it("formats full Japanese era date - R5年6月15日", () => {
+      const date = new Date(2023, 5, 15);
+      expect(
+        format(date, "NNn年M月d日", { locale: ja }),
+      ).toBe("R5年6月15日");
+    });
+    it("formats full Japanese era date - 令5年6月15日", () => {
+      const date = new Date(2023, 5, 15);
+      expect(
+        format(date, "NNNn年M月d日", { locale: ja }),
+      ).toBe("令5年6月15日");
     });
   });
 });

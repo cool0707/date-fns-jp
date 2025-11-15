@@ -1,5 +1,5 @@
 import { buildLocalizeFn } from "../../../_lib/buildLocalizeFn/index.ts";
-import type { Quarter } from "../../../../types.ts";
+import type { JpEra, Quarter } from "../../../../types.ts";
 import type { Localize, LocalizeFn } from "../../../types.ts";
 
 const eraValues = {
@@ -213,6 +213,7 @@ export const localize: Localize = {
   jpEra: buildLocalizeFn({
     values: jpEraValues,
     defaultWidth: "wide",
+    argumentCallback: (era) => (Number(era) - 1) as JpEra,
   }),
 
   jpEraFirstYear: jpEraFirstYear
