@@ -15,6 +15,7 @@ import type {
   DateArg,
   FirstWeekContainsDateOptions,
   FormatPart,
+  JpEraOptions,
   LocalizedOptions,
   WeekOptions,
 } from "../types.ts";
@@ -56,6 +57,7 @@ export interface FormatOptions
     WeekOptions,
     FirstWeekContainsDateOptions,
     AdditionalTokensOptions,
+    JpEraOptions,
     ContextOptions<Date> {}
 
 /**
@@ -366,6 +368,8 @@ export function format(
 
   const originalDate = toDate(date, options?.in);
 
+  const forceJpEra = options?.forceJpEra;
+
   if (!isValid(originalDate)) {
     throw new RangeError("Invalid time value");
   }
@@ -417,6 +421,7 @@ export function format(
     firstWeekContainsDate,
     weekStartsOn,
     locale,
+    forceJpEra,
   };
 
   return parts

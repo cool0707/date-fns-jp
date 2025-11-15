@@ -35,12 +35,25 @@ export function getJpEraInfo(date: Date): JpEraInfo | null {
  * Get the year within the Japanese era for a given Date.
  *
  * @param {Date} date - The Date to check.
- * @returns {number | null} Era year (1 for the first year) or null if the date is before the Meiji era.
+ * @param {JpEra} [forceEra] - Optional era index to force (1=Meiji, 2=Taisho, 3=Showa, 4=Heisei, 5=Reiwa).
+ *                             If specified, calculates the year as if the date belongs to this era.
+ * @returns {number | null} Era year (1 for the first year) or null if the date is before the Meiji era
+ *                          (or if forceEra is invalid).
+ *
+ * @example
+ * // Get actual era year
+ * const date = new Date(1998, 0, 1);
+ * getJpEraYear(date); // Returns 10 (Heisei 10)
+ *
+ * @example
+ * // Force Showa era
+ * const date = new Date(1998, 0, 1);
+ * getJpEraYear(date, 3); // Returns 73 (Showa 73)
  */
-export function getJpEraYear(date: Date): number | null {
-    const era = getJpEraInfo(date)
+export function getJpEraYear(date: Date, forceEra?: JpEra): number | null {
+    const era = forceEra ? jpEras.find((e) => e.era === forceEra) : getJpEraInfo(date)
     if (!era) {
-        return null // Return null for dates before the Meiji era
+        return null // Return null for dates before the Meiji era or invalid forceEra
     }
     const eraStartYear = era.since.getFullYear()
     return date.getFullYear() - eraStartYear + 1

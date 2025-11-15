@@ -267,6 +267,16 @@ export interface AdditionalTokensOptions {
 }
 
 /**
+ * Japanese era options. Used to build function options.
+ */
+export interface JpEraOptions {
+  /** Force a specific Japanese era for formatting. When specified, the date will be
+   * converted to the specified era year regardless of the actual era.
+   * For example, a date in Heisei 10 (1998) with forceJpEra=3 (Showa) will be formatted as Showa 73. */
+  forceJpEra?: JpEra;
+}
+
+/**
  * Nearest minute type. Goes from 1 to 30, where 1 is the nearest minute and 30
  * is nearest half an hour.
  */

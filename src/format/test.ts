@@ -1021,7 +1021,7 @@ describe("format", () => {
       ).toBe("2024-09-18");
     });
   });
-  describe("context", () => {
+  describe("Japanese era formatting", () => {
     it("formats full Japanese era date - 令和5年6月15日", () => {
       const date = new Date(2023, 5, 15);
       expect(
@@ -1045,6 +1045,57 @@ describe("format", () => {
       expect(
         format(date, "NNNn年M月d日", { locale: ja }),
       ).toBe("令5年6月15日");
+    });
+
+    describe("forceJpEra option", () => {
+      it("forces Showa era for Heisei date - 平成10年 → 昭和73年", () => {
+        const date = new Date(1998, 0, 1); // Heisei 10
+        expect(
+          format(date, "NNNNn年M月d日", { locale: ja, forceJpEra: 3 }),
+        ).toBe("昭和73年1月1日");
+      });
+
+      it("forces Showa era for Reiwa date - 令和5年 → 昭和98年", () => {
+        const date = new Date(2023, 5, 15); // Reiwa 5
+        expect(
+          format(date, "NNNNn年M月d日", { locale: ja, forceJpEra: 3 }),
+        ).toBe("昭和98年6月15日");
+      });
+
+      it("forces Meiji era for modern date", () => {
+        const date = new Date(2023, 5, 15); // Reiwa 5
+        expect(
+          format(date, "NNNNn年M月d日", { locale: ja, forceJpEra: 1 }),
+        ).toBe("明治156年6月15日");
+      });
+
+      it("forces Heisei era for Reiwa date - 令和5年 → 平成35年", () => {
+        const date = new Date(2023, 5, 15); // Reiwa 5
+        expect(
+          format(date, "NNNNn年M月d日", { locale: ja, forceJpEra: 4 }),
+        ).toBe("平成35年6月15日");
+      });
+
+      it("forces era with narrow format - NN token", () => {
+        const date = new Date(1998, 0, 1); // Heisei 10
+        expect(
+          format(date, "NNn年M月d日", { locale: ja, forceJpEra: 3 }),
+        ).toBe("S73年1月1日");
+      });
+
+      it("forces era with abbreviated format - NNN token", () => {
+        const date = new Date(1998, 0, 1); // Heisei 10
+        expect(
+          format(date, "NNNn年M月d日", { locale: ja, forceJpEra: 3 }),
+        ).toBe("昭73年1月1日");
+      });
+
+      it("forces era with numeric format - N token", () => {
+        const date = new Date(1998, 0, 1); // Heisei 10
+        expect(
+          format(date, "Nn年M月d日", { locale: ja, forceJpEra: 3 }),
+        ).toBe("373年1月1日");
+      });
     });
   });
 });

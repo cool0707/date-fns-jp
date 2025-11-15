@@ -8,6 +8,7 @@ import type {
   Day,
   Era,
   FirstWeekContainsDateOptions,
+  JpEraOptions,
   LocalizedOptions,
   Month,
   Quarter,
@@ -34,7 +35,7 @@ type Formatter = (
   localize: Localize,
   options: Required<
     LocalizedOptions<"options"> & WeekOptions & FirstWeekContainsDateOptions
-  >,
+  > & JpEraOptions,
 ) => string;
 
 /*
@@ -767,8 +768,8 @@ export const formatters: { [token: string]: Formatter } = {
   },
 
   // Japanese Era Year
-  n: function (date, token, localize) {
-    const jpEraYear = getJpEraYear(date);
+  n: function (date, token, localize, options) {
+    const jpEraYear = getJpEraYear(date, options.forceJpEra);
     if (jpEraYear === null) {
       return "";
     }
@@ -786,8 +787,8 @@ export const formatters: { [token: string]: Formatter } = {
   },
 
   // Japanese Era
-  N: function (date, token, localize) {
-    const jpEra = getJpEraInfo(date)?.era;
+  N: function (date, token, localize, options) {
+    const jpEra = options.forceJpEra ?? getJpEraInfo(date)?.era;
     if (!jpEra) {
       return "";
     }
