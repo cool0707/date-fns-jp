@@ -1,1 +1,2 @@
-export { enUS as defaultLocale } from "../../locale/en-US/index.ts";
+// set the default locale to ja since it will only be used in Japanese anyway
+export { ja as defaultLocale } from "../../locale/ja/index.ts";
