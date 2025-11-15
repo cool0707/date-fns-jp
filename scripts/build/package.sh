@@ -9,6 +9,17 @@ set -e
 
 echo "⚡️ Building package"
 
+# Function to restore English locale on exit
+restore_locale() {
+  if [ -f "src/_lib/defaultLocale/index.en.ts" ]; then
+    cp "src/_lib/defaultLocale/index.en.ts" "src/_lib/defaultLocale/index.ts"
+    echo "🌍 Default locale restored to English (cleanup)"
+  fi
+}
+
+# Set trap to restore locale on exit (success or failure)
+trap restore_locale EXIT
+
 #region Prepare
 
 # cd to the root dir
@@ -22,6 +33,22 @@ export PACKAGE_OUTPUT_PATH="$dir"
 # Clean up output dir
 rm -rf "$dir"
 mkdir -p "$dir"
+
+#endregion
+
+#region Switch to Japanese locale for CDN
+
+echo
+echo "🌏 Switching default locale to Japanese for build..."
+
+# Switch defaultLocale to Japanese for CDN builds
+defaultLocalePath="src/_lib/defaultLocale/index.ts"
+defaultLocaleEnPath="src/_lib/defaultLocale/index.en.ts"
+defaultLocaleJaPath="src/_lib/defaultLocale/index.ja.ts"
+
+cp "$defaultLocaleJaPath" "$defaultLocalePath"
+
+echo "🟢 Default locale switched to Japanese!"
 
 #endregion
 
