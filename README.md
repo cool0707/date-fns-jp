@@ -3,6 +3,8 @@
 date-fns-jp は、date-fns に和暦のサポートを追加したものです。
 date-fns はブラウザと Node.js で JavaScript の日付を操作するための、最も包括的でありながらシンプルで一貫性のあるツールセットを提供します。
 
+**📌 重要**: このパッケージはデフォルトロケールが日本語（`ja`）に設定されています。
+
 👉 [date-fns ドキュメント](https://date-fns.org/)
 
 👉 [date-fns ブログ](https://blog.date-fns.org/)
@@ -90,6 +92,36 @@ parse("令和5年6月15日", "NNNNn年M月d日", referenceDate, { locale: ja });
 parse("R050615", "NNnnMMdd", referenceDate, { locale: ja });
 //=> Date object for 2023/06/15
 ```
+
+### 元号の強制変換 (`forceJpEra` オプション)
+
+`forceJpEra` オプションを使用すると、実際の元号に関係なく、指定した元号で日付をフォーマットできます。
+
+```js
+import { format } from "date-fns";
+import ja from "date-fns/locale/ja";
+
+const date = new Date(1998, 0, 1); // 平成10年1月1日
+
+// 通常のフォーマット（実際の元号）
+format(date, "NNNNn年M月d日", { locale: ja });
+//=> '平成10年1月1日'
+
+// 昭和を強制（forceJpEra: 3）
+format(date, "NNNNn年M月d日", { locale: ja, forceJpEra: 3 });
+//=> '昭和73年1月1日'
+
+// 明治を強制（forceJpEra: 1）
+format(date, "NNNNn年M月d日", { locale: ja, forceJpEra: 1 });
+//=> '明治131年1月1日'
+```
+
+**元号の番号:**
+- `1`: 明治 (1868年1月25日〜)
+- `2`: 大正 (1912年7月30日〜)
+- `3`: 昭和 (1926年12月25日〜)
+- `4`: 平成 (1989年1月8日〜)
+- `5`: 令和 (2019年5月1日〜)
 
 ## ドキュメント
 
