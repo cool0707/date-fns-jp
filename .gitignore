@@ -8,6 +8,7 @@ npm-debug.log*
 /.devcontainer/state/
 # Dist
 /lib/
+/release-dist/
 # Dev
 tmp
 .envrc
